@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using MudBlazor.Utilities
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,12 +8,32 @@
     <base href="/"/>
     <link rel="stylesheet" href="app.css"/>
     <link rel="stylesheet" href="KindPaws.UI.styles.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <HeadOutlet/>
 </head>
 
 <body>
 <Routes/>
 <script src="_framework/blazor.web.js"></script>
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
 </body>
 
 </html>
+
+@code
+{
+    public static MudTheme MainTheme = new()
+    {
+        PaletteDark = new PaletteDark
+        {
+            Surface = new MudColor(0xFF, 0xF5, 0xE1, 255),
+            Primary = new MudColor(0xFF, 0xD3, 0xB6, 255),
+            Secondary = new MudColor(0xA8, 0xD8, 0xB9, 255),
+            Tertiary = new MudColor(0xFF, 0x8C, 0x94, 255),
+            TextPrimary = new MudColor(0x4A, 0x4A, 0x4A, 255),
+            Info = new MudColor(0x2D, 0x9b, 0xF0, 255)
+        }
+    };
+
+}

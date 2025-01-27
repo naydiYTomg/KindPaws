@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Rosalinda;
+    src: url("fonts/Rosalinda.ttf");
+}
+
 h1:focus {
     outline: none;
 }
