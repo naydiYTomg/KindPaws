@@ -35,3 +35,7 @@ h1:focus {
 .kp-bordered-b {
     border: black 2px solid;
 }
+.kp-all-text {
+    color: var(--mud-palette-text-primary);
+    font-family: "JetBrains Mono NL", sans-serif;
+}

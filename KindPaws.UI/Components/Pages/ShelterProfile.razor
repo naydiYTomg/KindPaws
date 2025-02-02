@@ -1,4 +1,7 @@
-@page "/shelter"
+@page "/shelter/{ShelterId:int}"
+@rendermode InteractiveServer
+@inject IDialogService DialogService
+<MudDialogProvider/>
 <MudPaper Style="background-color: var(--mud-palette-surface)" Width="100%" Height="100rem">
     
         <MainAppBar/>
@@ -8,17 +11,21 @@
             </MudItem>
             <MudItem xs="9">
                 <MudPaper Class="kp-bordered-b" Style="background-color: var(--mud-palette-secondary); margin-left: 1.5%; margin-top: 1.5%; width: 80%; height: 30%; justify-content: center; display: flex">
-                    <MudText Typo="Typo.h6" Align="Align.Center" Style="display: flex; align-items: center">НАЗВАНИЕ</MudText>
+                    <MudText Class="kp-all-text" Typo="Typo.h6" Align="Align.Center" Style="display: flex; align-items: center">НАЗВАНИЕ</MudText>
                 </MudPaper>
                 <MudGrid>
                     <MudItem xs="6">
                         <MudPaper Class="kp-bordered-b" Style="background-color: var(--mud-palette-secondary); margin-left: 3%; margin-top: 1.5%; width: 52rem; height: 10rem; display: flex; justify-content: center">
-                            <MudText Align="Align.Center" Style="display: flex; align-items: center;">О приютеО приютеО приютеО приюте</MudText>
+                            <MudText Class="kp-all-text" Align="Align.Center" Style="display: flex; align-items: center;">О приютеО приютеО приютеО приюте</MudText>
                         </MudPaper>
                     </MudItem>
                     <MudItem xs="6" Style="display: flex; align-items: baseline; justify-content: center; gap: 1rem; flex-direction: column">
-                        <MudChip T="int" Color="Color.Tertiary" Icon="@Icons.Material.Filled.Star" IconColor="Color.Error" Style="width: 18.5rem; height: 4.3rem; display: flex; align-items: center; justify-content: center; margin-left: 20%; border: 2px solid black">5.0</MudChip>
-                        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Style="width: 18.5rem; height: 4.3rem; border-radius: 15px; border: 2px solid black">Оставить отзыв</MudButton>
+                        <MudChip T="int" @onclick="OpenFeedbackDialog" Color="Color.Tertiary" Icon="@Icons.Material.Filled.Star" IconColor="Color.Error" Style="width: 18.5rem; height: 4.3rem; display: flex; align-items: center; justify-content: center; margin-left: 20%; border: 2px solid black">
+                            <MudText Class="kp-all-text">@shelterRating</MudText>
+                        </MudChip>
+                        <MudButton @onclick="OpenFeedbackLeavingDialog" Variant="Variant.Filled" Color="Color.Tertiary" Style="width: 18.5rem; height: 4.3rem; border-radius: 15px; border: 2px solid black">
+                            <MudText Class="kp-all-text">Оставить отзыв</MudText>
+                        </MudButton>
                     </MudItem>
                 </MudGrid>
                 
@@ -27,20 +34,86 @@
         </MudGrid>
         <MudDivider Style="background-color: black; height: 2px"/>
         @* <div style="height: 2px; background-color: black"></div> *@
-        <div style="display: flex; justify-content: center">
-            <MudCard Class="kp-bordered-b" Style="background-color: var(--mud-palette-primary); width: 90%; height: 10rem; border-radius: 20px; margin-top: .5%">
-                <MudCardHeader>
-                    <MudText Typo="Typo.h5">
-                        Текущий сбор: ТЕСТ
-                    </MudText>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudProgressLinear Value="50" Striped="true" Color="Color.Success" Style="width: 50rem; height: 1rem"></MudProgressLinear>
-                </MudCardContent>
-            </MudCard>
-        </div>
+        <MudStack Spacing="6">
+            <div style="display: flex; justify-content: center">
+                <MudCard Class="kp-bordered-b" Style="background-color: var(--mud-palette-primary); width: 90%; height: 10rem; border-radius: 20px; margin-top: .5%">
+                    <MudCardHeader>
+                        <MudText Typo="Typo.h5">
+                            Текущий сбор: ТЕСТ
+                        </MudText>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudStack Row="true">
+                            <MudStack Row="false" Spacing="2">
+                                <div style="display: flex; justify-content: space-between; flex-direction: row; align-content: start;">
+                                    <MudText Class="kp-all-text" Style="display: flex; align-self: start">@fundraiserProgressValue%</MudText>
+                                    <MudText Class="kp-all-text" Style="display: flex; align-self: end">@currentFundraiserCollected&#8381/@currentFundraiserNeeds&#8381</MudText>
+                                </div>
+                                <MudProgressLinear Value="@fundraiserProgressValue" Striped="true" Color="Color.Success" Style="width: 83rem; height: 1rem"></MudProgressLinear>
+                            </MudStack>
+                            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Style="width: 30rem; height: 8rem; margin-top: -4%; border-radius: 20px; border: 2px solid black">
+                                <MudText Typo="Typo.h3" Class="kp-all-text">ПОДДЕРЖАТЬ</MudText>
+                            </MudButton>
+                        </MudStack>
+                    </MudCardContent>
+                </MudCard>
+            </div>
+            <div style="display: flex; justify-content: center">
+                <MudCard Class="kp-bordered-b" Style="display: flex; width: 90%; height: 40rem; background-color: var(--mud-palette-primary); border-radius: 35px">
+                    <MudStack Row="true" Spacing="5">
+                        <MudCard Class="kp-bordered-b" Style="display: flex; text-align: center; background-color: var(--mud-palette-secondary); width: 20rem; height: 38.5rem; margin-left: .5%; margin-top: .5%; border-radius: 20px">
+                            <MudText Typo="Typo.h6" Class="kp-all-text">
+                                ФИЛЬТРЫ
+                            </MudText>
+                        </MudCard>
+                        <MudStack Spacing="3">
+                            <InShelterAnimalCard/>
+                            <InShelterAnimalCard/>
+                            <InShelterAnimalCard/>
+                            <InShelterAnimalCard/>
+                            <InShelterAnimalCard/>
+                            <InShelterAnimalCard/>
+                        </MudStack>
+                    </MudStack>
+                </MudCard>
+            </div>
+        </MudStack>
         
 </MudPaper>
 @code {
+    private static int currentFundraiserNeeds = 230000;
+    private static int currentFundraiserCollected = 115000;
+    private double shelterRating = 5.0;
+    private double fundraiserProgressValue = ((double)currentFundraiserCollected / (double)currentFundraiserNeeds) * 100;
     
+    [Parameter]
+    public int ShelterId { get; set; }
+    private Task OpenFeedbackDialog()
+    {
+        var options = new DialogOptions
+        {
+            CloseButton = true,
+            CloseOnEscapeKey = true,
+        };
+        return DialogService.ShowAsync<FeedbackDialog>("Отзывы", options);
+    }
+
+    private Task OpenFeedbackLeavingDialog()
+    {
+        var options = new DialogOptions
+        {
+            CloseButton = true
+        };
+        var parameters = new DialogParameters
+        {
+            { "ShelterId", ShelterId }
+        };
+        return DialogService.ShowAsync<LeaveFeedbackDialog>("Оставить отзыв", parameters, options);
+    }
+    private void TestOtziv()
+    {
+        Console.WriteLine("CLICKED");
+        // Console.WriteLine($"{currentFundraiserNeeds}");
+    }
+
 }
