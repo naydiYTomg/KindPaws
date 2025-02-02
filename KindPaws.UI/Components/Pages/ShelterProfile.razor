@@ -1,0 +1,46 @@
+@page "/shelter"
+<MudPaper Style="background-color: var(--mud-palette-surface)" Width="100%" Height="100rem">
+    
+        <MainAppBar/>
+        <MudGrid>
+            <MudItem xs="3" >
+                <MudImage Class="kp-bordered-b" Alt="Logo" Src="images/templogo.png" Style="border-radius: 50px; width: 16rem; height: 16rem; margin-left: 50%; margin-top: 5%"/>
+            </MudItem>
+            <MudItem xs="9">
+                <MudPaper Class="kp-bordered-b" Style="background-color: var(--mud-palette-secondary); margin-left: 1.5%; margin-top: 1.5%; width: 80%; height: 30%; justify-content: center; display: flex">
+                    <MudText Typo="Typo.h6" Align="Align.Center" Style="display: flex; align-items: center">НАЗВАНИЕ</MudText>
+                </MudPaper>
+                <MudGrid>
+                    <MudItem xs="6">
+                        <MudPaper Class="kp-bordered-b" Style="background-color: var(--mud-palette-secondary); margin-left: 3%; margin-top: 1.5%; width: 52rem; height: 10rem; display: flex; justify-content: center">
+                            <MudText Align="Align.Center" Style="display: flex; align-items: center;">О приютеО приютеО приютеО приюте</MudText>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="6" Style="display: flex; align-items: baseline; justify-content: center; gap: 1rem; flex-direction: column">
+                        <MudChip T="int" Color="Color.Tertiary" Icon="@Icons.Material.Filled.Star" IconColor="Color.Error" Style="width: 18.5rem; height: 4.3rem; display: flex; align-items: center; justify-content: center; margin-left: 20%; border: 2px solid black">5.0</MudChip>
+                        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Style="width: 18.5rem; height: 4.3rem; border-radius: 15px; border: 2px solid black">Оставить отзыв</MudButton>
+                    </MudItem>
+                </MudGrid>
+                
+                
+            </MudItem>
+        </MudGrid>
+        <MudDivider Style="background-color: black; height: 2px"/>
+        @* <div style="height: 2px; background-color: black"></div> *@
+        <div style="display: flex; justify-content: center">
+            <MudCard Class="kp-bordered-b" Style="background-color: var(--mud-palette-primary); width: 90%; height: 10rem; border-radius: 20px; margin-top: .5%">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h5">
+                        Текущий сбор: ТЕСТ
+                    </MudText>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudProgressLinear Value="50" Striped="true" Color="Color.Success" Style="width: 50rem; height: 1rem"></MudProgressLinear>
+                </MudCardContent>
+            </MudCard>
+        </div>
+        
+</MudPaper>
+@code {
+    
+}
