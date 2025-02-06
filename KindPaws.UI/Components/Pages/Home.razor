@@ -3,7 +3,12 @@
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
-
-<MudPaper Style="@($"background-color: {Color.Surface};")" Width="100%" Height="100rem">
+<MudLayout Style="background-color: var(--mud-palette-surface); width: 100%; max-height: 200rem">
     <MainAppBar/>
-</MudPaper>
+    <MudMainContent Style="height: 100rem"/>
+    <PageFooterInfo/>
+</MudLayout>
+@* <MudPaper Style="@($"background-color: {Color.Surface};")" Width="100%" Height="100rem"> *@
+@*     <MainAppBar/> *@
+@*      *@
+@* </MudPaper> *@
