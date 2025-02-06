@@ -6,12 +6,15 @@
         <MudText Style="font-family: Rosalinda,sans-serif;" Typo="Typo.h3">Dобрые лапы</MudText>
     </MudButton>
     <MudSpacer/>
-    
+    @if (isAdministrator)
+    {
+        <MudIconButton Icon="@Icons.Material.Filled.AdminPanelSettings" Size="Size.Large" Color="Color.Tertiary" Href="/admin"></MudIconButton>
+    }
     <MudIconButton Icon="@Icons.Material.Filled.Search" Size="Size.Large" Color="Color.Tertiary"/>
     <MudIconButton Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Tertiary"/>
 </MudAppBar>
 
 
 @code {
-    
+    private bool isAdministrator = true;
 }
