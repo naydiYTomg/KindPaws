@@ -1,15 +1,20 @@
 
-<MudAppBar Color="Color.Primary" Fixed="true">
-    <MudButton Variant="Variant.Filled" DropShadow="false" Color="Color.Surface" Size="Size.Large" Style="border-left: black 1px ridge; width: 13%; height: 100%; border-right: black 1px ridge; border-radius: 0"></MudButton>
+<MudAppBar Color="Color.Primary" Fixed="false">
+    <MudButton Variant="Variant.Filled" DropShadow="false" Color="Color.Surface" Size="Size.Large" Style="border-left: black 1px ridge; width: 13%; height: 100%; border-right: black 1px ridge; border-radius: 0" Href="/shelter/1"></MudButton>
     @* <MudContainer MaxWidth="MaxWidth.ExtraSmall"></MudContainer> *@
-    <MudText Style="font-family: Rosalinda,sans-serif" Color="Color.Info" Typo="Typo.h3">Dобрые лапы</MudText>
+    <MudButton Variant="Variant.Text" Color="Color.Info" Href="/">
+        <MudText Style="font-family: Rosalinda,sans-serif;" Typo="Typo.h3">Dобрые лапы</MudText>
+    </MudButton>
     <MudSpacer/>
-    
+    @if (isAdministrator)
+    {
+        <MudIconButton Icon="@Icons.Material.Filled.AdminPanelSettings" Size="Size.Large" Color="Color.Tertiary" Href="/admin"></MudIconButton>
+    }
     <MudIconButton Icon="@Icons.Material.Filled.Search" Size="Size.Large" Color="Color.Tertiary"/>
     <MudIconButton Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Tertiary"/>
 </MudAppBar>
 
 
 @code {
-    
+    private bool isAdministrator = true;
 }

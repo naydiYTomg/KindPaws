@@ -1,0 +1,36 @@
+@using KindPaws.Core.InputModels
+<MudDialog Style="min-width: 90%; min-height: 20%; background-color: var(--mud-palette-primary)">
+    <TitleContent>
+        <MudText Typo="Typo.h5" Class="kp-all-text">Оставить отзыв</MudText>
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="@_feedbackInput" OnValidSubmit="HandleFeedback">
+            <DataAnnotationsValidator/>
+            <MudTextField  Class="kp-all-text" Style="font-size: 20px" AutoGrow="true" Typo="Typo.h4" Label="Имя" ShrinkLabel="true" Placeholder="Иван..." @bind-Value="_feedbackInput.AuthorName" Required/>
+            <ValidationMessage For="() => _feedbackInput.AuthorName"/>
+            <MudTextField Class="kp-all-text" Style="font-size: 20px" AutoGrow="true" Typo="Typo.h4" Label="Фамилия" ShrinkLabel="true" Placeholder="Иванов..." @bind-Value="_feedbackInput.AuthorSurname" Required/>
+            <ValidationMessage For="() => _feedbackInput.AuthorSurname"/>
+            <MudTextField Class="kp-all-text" Style="font-size: 20px" AutoGrow="true" Typo="Typo.h4" Label="Отзыв" ShrinkLabel="true" Placeholder="Отзыв..." @bind-Value="_feedbackInput.Content" Required/>
+            <ValidationMessage For="() => _feedbackInput.Content"/>
+            <MudRating Size="Size.Large" @bind-SelectedValue="_feedbackInput.Rating" MaxValue="5"/>
+            <ValidationMessage For="() => _feedbackInput.Rating"/>
+            <br/>
+            <MudButton ButtonType="ButtonType.Submit" Size="Size.Large" Style="background-color: var(--mud-palette-tertiary)">Отправить</MudButton>
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+@code {
+    [Parameter]
+    public int ShelterId { get; set; }
+    private FeedbackInputModel _feedbackInput = new();
+    [CascadingParameter]
+    private IMudDialogInstance Dialog { get; set; }
+
+    private void HandleFeedback()
+    {
+        _feedbackInput.ShelterId = ShelterId;
+        Console.WriteLine($"Отзыв отправлен с текстом {_feedbackInput.Content}");
+        Dialog.Close();
+    }
+
+}

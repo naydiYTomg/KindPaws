@@ -12,6 +12,11 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\fonts\" />
+      <Folder Include="wwwroot\images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\KindPaws.Core\KindPaws.Core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -32,3 +32,10 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+.kp-bordered-b {
+    border: black 2px solid;
+}
+.kp-all-text {
+    color: var(--mud-palette-text-primary);
+    font-family: "JetBrains Mono NL", sans-serif;
+}
