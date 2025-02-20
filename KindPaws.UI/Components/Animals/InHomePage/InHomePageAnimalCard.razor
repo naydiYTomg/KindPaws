@@ -1,0 +1,30 @@
+@using KindPaws.Core.DTOs
+
+<MudCard Style="width: 90%; height: 15rem; background-color: var(--mud-palette-secondary); border-radius: 15px">
+    <MudCardContent>
+        <MudStack Row="true">
+            <div style="width: 20%; height: 10rem; overflow: hidden;">
+                <MudImage Style="height: 100%; object-fit: cover; object-position: left; border-radius: 10px" Src="@($"images/animals/{Src}")"/>
+            </div>
+            <MudContainer>
+                <MudText Typo="Typo.h3" Style="color: var(--mud-palette-text-primary)">@Data.Name</MudText>
+                <MudText Typo="Typo.h6" Style="color: var(--mud-palette-text-primary)">@Desc</MudText>
+                <br/>
+                <MudButton>
+                    <MudText Typo="Typo.button" Style="color: var(--mud-palette-text-primary)">Подробнее...</MudText>
+                </MudButton>
+            </MudContainer>
+        </MudStack>
+        
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public AnimalDTO Data { get; set; }
+    [Parameter]
+    public string Src { get; set; }
+    [Parameter]
+    public string Desc { get; set; }
+    
+}

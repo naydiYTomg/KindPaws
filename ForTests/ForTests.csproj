@@ -15,4 +15,9 @@
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\KindPaws.Core\KindPaws.Core.csproj" />
+      <ProjectReference Include="..\KindPaws.DAL\KindPaws.DAL.csproj" />
+    </ItemGroup>
+
 </Project>

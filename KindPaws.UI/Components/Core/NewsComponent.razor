@@ -1,0 +1,17 @@
+@using KindPaws.Core
+
+<MudCarousel TData="NewspaperCard" Style="display: flex; height: 40rem; justify-content: center">
+    @foreach (var newspaper in _news.OrderBy(x => x.Date))
+    {
+        <MudCarouselItem Style="display: flex; justify-content: center; justify-items: center"><NewspaperCard Newspaper="@newspaper"/></MudCarouselItem>
+    }
+</MudCarousel>
+
+@code {
+    private List<Newspaper> _news = [ 
+        new() { ShelterId = 1, Content = "Проводиться масштабный сбор в приюте Х!!!!!!!", Date = DateTime.Now },
+        new() { ShelterId = 2, Content = "В приюте Х2 появилось новое животное!!!!", Date = DateTime.Parse("01.02.2025") },
+        new() { ShelterId = 3, Content = "В приюте Х3 появилось новое животное!!!!", Date = DateTime.Parse("02.02.2025") }
+    ];
+
+}

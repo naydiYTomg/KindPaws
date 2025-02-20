@@ -1,8 +1,8 @@
 namespace KindPaws.Core.DTOs;
 
-public class AnimalTypeDTO
+public class RoleDTO
 {
     public int Id { get; set; }
     public string? Name { get; set; }
-    public List<TagDTO>? Tags { get; set; }
+    public List<UserDTO> Users { get; set; } = [];
 }

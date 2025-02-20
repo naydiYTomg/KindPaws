@@ -1,33 +1,22 @@
-using Dapper;
 using KindPaws.Core.DTOs;
-using KindPaws.Core.Queries;
-using KindPaws.DAL.Utils;
 
 namespace KindPaws.DAL;
 
 public class UserRepository
 {
+
     public List<UserDTO> GetAllUsers()
     {
-        var connection = ConnectionBuilder.Create()
-            .WithQuery(UserQueries.GetAllUsers)
-            .Build();
-        return connection.Execute<UserDTO>().AsList();
-    }
-
-    public List<UserDTO> GetAllAdministrators()
-    {
-        var connection = ConnectionBuilder.Create()
-            .WithQuery(UserQueries.GetAllAdministrators)
-            .Build();
-        return connection.Execute<UserDTO>().AsList();
+        return App.Context.Users.ToList();
     }
 
     public List<UserDTO> GetAllShelterOwners()
     {
-        var connection = ConnectionBuilder.Create()
-            .WithQuery(UserQueries.GetAllShelterOwners)
-            .Build();
-        return connection.Execute<UserDTO>().AsList();
+        return App.Context.Users.Where(x => (x.Role != null) && (x.Role.Name == "Владелец приюта")).ToList();
+    }
+
+    public UserDTO GetUserById(int id)
+    {
+        return App.Context.Users.Single(x => x.Id == id);
     }
 }

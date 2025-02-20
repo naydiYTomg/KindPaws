@@ -1,0 +1,16 @@
+@using KindPaws.Core
+
+<MudCard Style="display: flex; background-color: var(--mud-palette-secondary); height: 90%; width: 70%; justify-content: center; box-shadow: 0 0 5px 10px var(--mud-palette-secondary)">
+    <MudCardHeader Style="opacity: 1; box-shadow: 0 0 5px 10px var(--mud-palette-secondary)">
+        <MudText Align="Align.Center" Typo="Typo.h3">НОВОСТЬ</MudText>
+    </MudCardHeader>
+    <MudCardContent Style="opacity: 1; box-shadow: 0 0 5px 10px var(--mud-palette-secondary)">
+        <MudText Typo="Typo.h6">@Newspaper.Content</MudText>
+    </MudCardContent>
+    <MudText Style="opacity: 1; box-shadow: 0 0 5px 10px var(--mud-palette-secondary)" Align="Align.Center">@Newspaper.Date</MudText>
+</MudCard>
+
+@code {
+    [Parameter]
+    public Newspaper Newspaper { get; set; }
+}

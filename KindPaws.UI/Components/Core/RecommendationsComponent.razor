@@ -1,0 +1,21 @@
+@using KindPaws.Core.DTOs
+<div style="display: flex; justify-content: center; justify-items: center; align-items: center">
+    <MudStack Spacing="3" Style="width: 90%; height: 60rem; display: flex; justify-items: center; justify-content: center; align-items: center">
+        <MudText Typo="Typo.h2" Style="color: var(--mud-palette-text-primary)">Может быть вам понравиться...</MudText>
+        <MudStack Style="background-color: var(--mud-palette-primary); display: flex; width: 80%; justify-content: center; justify-items: center; align-items: center; box-shadow: 0 0 5px 10px var(--mud-palette-primary)">
+            @foreach (var (dto, desc, src) in _rawData)
+            {
+                <InHomePageAnimalCard Data="@dto" Desc="@desc" Src="@src"/>
+            }
+        </MudStack>
+    </MudStack>
+</div>
+@code
+{
+    private List<(AnimalDTO, string, string)> _rawData = 
+    [
+        (new AnimalDTO { Id = 0, Name = "Барсук" }, "Очень классный барсучок. Поступил к нам 14.02.23. Добрый и здоровый", "0/barsuk.png"),
+        (new AnimalDTO { Id = 1, Name = "Кощк" }, "Милый котик ждёт своего хозяина. Пушистый и ласковый, приучен к лотку", "1/koshk.png"),
+        (new AnimalDTO { Id = 3, Name = "Сбка" }, "Хороший пёсик, преданный друг и бравый защитник. Приучен гулять", "2/sbka.jpeg")
+    ];
+}
