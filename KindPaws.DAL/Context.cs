@@ -13,6 +13,8 @@ public class Context : DbContext
     public DbSet<AnimalDTO> Animals { get; set; }
     public DbSet<AnimalTypeDTO> Types { get; set; }
     public DbSet<TagDTO> Tags { get; set; }
+    public DbSet<FundraiserDTO> Fundraisers { get; set; }
+    public DbSet<NewspaperDTO> Newspapers { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

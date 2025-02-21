@@ -1,0 +1,33 @@
+@using System.Text
+@using KindPaws.Core.InputModels
+
+<MudCard Class="kp-bordered-b" Style="background-color: var(--mud-palette-primary); display: flex; align-items: center; width: 30rem; height: 30rem">
+    <MudCardHeader>
+        <MudText Class="kp-all-text" Typo="Typo.h4">Вход</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <EditForm Model="_model" OnValidSubmit="HandleLogin" FormName="LoginForm">
+            <DataAnnotationsValidator/>
+            <MudTextField  Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Логин" ShrinkLabel="true" @bind-Value="_model.Login" Required/>
+            <ValidationMessage For="() => _model.Login"></ValidationMessage>
+            <MudTextField  Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Пароль" ShrinkLabel="true" @bind-Value="_rawPassword" Required/>
+            <br/>
+            <MudButton ButtonType="ButtonType.Submit" Size="Size.Large" Style="background-color: var(--mud-palette-tertiary)">Войти</MudButton>
+        </EditForm>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+
+    private UserLoginInputModel _model = new();
+
+    private string _rawPassword;
+
+    private void HandleLogin()
+    {
+        Console.WriteLine("DSDD");
+        _model.Password = Encoding.UTF8.GetBytes(_rawPassword);
+        Console.WriteLine($"Login: {_model.Login} Password: {_model.Password}");
+    }
+}

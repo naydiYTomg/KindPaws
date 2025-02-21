@@ -1,3 +1,4 @@
+using KindPaws.BLL;
 using KindPaws.UI.Components;
 using MudBlazor.Services;
 
@@ -5,6 +6,9 @@ namespace KindPaws.UI;
 
 public class Program
 {
+    public static readonly ShelterManager ShelterManager = new();
+    public static readonly FundraiserManager FundraiserManager = new();
+    public static readonly AnimalManager AnimalManager = new();
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);

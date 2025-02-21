@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\KindPaws.BLL\KindPaws.BLL.csproj" />
       <ProjectReference Include="..\KindPaws.Core\KindPaws.Core.csproj" />
     </ItemGroup>
 

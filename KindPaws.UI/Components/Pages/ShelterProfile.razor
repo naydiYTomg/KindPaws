@@ -1,27 +1,35 @@
 @page "/shelter/{ShelterId:int}"
+@using KindPaws.Core.OutputModels
 @rendermode InteractiveServer
 @inject IDialogService DialogService
 <MudDialogProvider/>
 <MudLayout Style="background-color: var(--mud-palette-surface); width: 100%; max-height: 100rem">
     <MainAppBar/>
-    <MudMainContent Style="height: 80rem">
+    @if (isLoading)
+    {
+        <MudSkeleton Width="100%" Height="20px" Animation="Animation.Pulse" />
+        <MudSkeleton Width="80%" Height="20px" Animation="Animation.Pulse" />
+    }
+    else
+    {
+        <MudMainContent Style="height: 80rem">
         <MudGrid>
             <MudItem xs="3" >
-                <MudImage Class="kp-bordered-b" Alt="Logo" Src="images/templogo.png" Style="border-radius: 50px; width: 16rem; height: 16rem; margin-left: 50%; margin-top: 5%"/>
+                <MudImage Class="kp-bordered-b" Alt="Logo" Src="@($"images/shelterLogos/{ShelterId}.png")" Style="border-radius: 50px; width: 16rem; height: 16rem; margin-left: 50%; margin-top: 5%"/>
             </MudItem>
             <MudItem xs="9">
                 <MudPaper Class="kp-bordered-b" Style="background-color: var(--mud-palette-secondary); margin-left: 1.5%; margin-top: 1.5%; width: 80%; height: 30%; justify-content: center; display: flex">
-                    <MudText Class="kp-all-text" Typo="Typo.h6" Align="Align.Center" Style="display: flex; align-items: center">НАЗВАНИЕ</MudText>
+                    <MudText Class="kp-all-text" Typo="Typo.h6" Align="Align.Center" Style="display: flex; align-items: center">@_name</MudText>
                 </MudPaper>
                 <MudGrid>
                     <MudItem xs="6">
                         <MudPaper Class="kp-bordered-b" Style="background-color: var(--mud-palette-secondary); margin-left: 3%; margin-top: 1.5%; width: 52rem; height: 10rem; display: flex; justify-content: center">
-                            <MudText Class="kp-all-text" Align="Align.Center" Style="display: flex; align-items: center;">О приютеО приютеО приютеО приюте</MudText>
+                            <MudText Class="kp-all-text" Align="Align.Center" Style="display: flex; align-items: center; text-wrap: wrap">@_description</MudText>
                         </MudPaper>
                     </MudItem>
                     <MudItem xs="6" Style="display: flex; align-items: baseline; justify-content: center; gap: 1rem; flex-direction: column">
                         <MudChip T="int" @onclick="OpenFeedbackDialog" Color="Color.Tertiary" Icon="@Icons.Material.Filled.Star" IconColor="Color.Error" Style="width: 18.5rem; height: 4.3rem; display: flex; align-items: center; justify-content: center; margin-left: 20%; border: 2px solid black">
-                            <MudText Class="kp-all-text">@shelterRating</MudText>
+                            <MudText Class="kp-all-text">@shelterRating.ToString("F1")</MudText>
                         </MudChip>
                         <MudButton @onclick="OpenFeedbackLeavingDialog" Variant="Variant.Filled" Color="Color.Tertiary" Style="width: 18.5rem; height: 4.3rem; border-radius: 15px; border: 2px solid black">
                             <MudText Class="kp-all-text">Оставить отзыв</MudText>
@@ -39,7 +47,7 @@
                 <MudCard Class="kp-bordered-b" Style="background-color: var(--mud-palette-primary); width: 90%; height: 10rem; border-radius: 20px; margin-top: .5%">
                     <MudCardHeader>
                         <MudText Typo="Typo.h5">
-                            Текущий сбор: ТЕСТ
+                            @_fundName
                         </MudText>
                     </MudCardHeader>
                     <MudCardContent>
@@ -67,33 +75,63 @@
                             </MudText>
                         </MudCard>
                         <MudStack Spacing="3">
-                            <InShelterAnimalCard/>
-                            <InShelterAnimalCard/>
-                            <InShelterAnimalCard/>
-                            <InShelterAnimalCard/>
-                            <InShelterAnimalCard/>
-                            <InShelterAnimalCard/>
+                            @foreach (var animal in animals)
+                            {
+                                <InShelterAnimalCard Name="@animal.Name"/>
+                            }
                         </MudStack>
                     </MudStack>
                 </MudCard>
             </div>
         </MudStack>
     </MudMainContent>
+    }
     <PageFooterInfo/>
 </MudLayout>
+
 @* <MudPaper Style="background-color: var(--mud-palette-surface)" Width="100%" Height="100rem"> *@
 @*      *@
 @*          *@
 @*      *@
 @* </MudPaper> *@
 @code {
-    private static int currentFundraiserNeeds = 230000;
-    private static int currentFundraiserCollected = 115000;
+    private decimal currentFundraiserNeeds;
+    private decimal currentFundraiserCollected;
     private double shelterRating = 5.0;
-    private double fundraiserProgressValue = ((double)currentFundraiserCollected / (double)currentFundraiserNeeds) * 100;
+    private double fundraiserProgressValue;
+
+    private string _name;
+    private string _fundName;
+    private string _description;
+
+    private List<AnimalForShelterOutputModel> animals;
+    
     
     [Parameter]
     public int ShelterId { get; set; }
+
+    private bool isLoading = true;
+    protected override Task OnInitializedAsync()
+    {
+        return Init();
+    }
+
+
+    private async Task Init()
+    {
+        var shelter = await Program.ShelterManager.GetShelterByIdAsync(ShelterId);
+        var fundraiser = await Program.FundraiserManager.GetCurrentShelterFundraiserByIdAsync(ShelterId);
+        _fundName = fundraiser.Name;
+        currentFundraiserNeeds = fundraiser.Needs;
+        currentFundraiserCollected = fundraiser.Collected;
+        fundraiserProgressValue = (double)((currentFundraiserCollected / currentFundraiserNeeds) * 100);
+        var gotAnimals = await Program.AnimalManager.GetAllAnimalsInShelterAsync(ShelterId);
+        animals = gotAnimals;
+        _name = shelter.Name;
+        _description = shelter.Description;
+        isLoading = false;
+    }
+
     private Task OpenFeedbackDialog()
     {
         var options = new DialogOptions
