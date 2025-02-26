@@ -1,0 +1,33 @@
+﻿@page "/AnimalProfile"
+@rendermode InteractiveServer
+
+<PageTitle>Животное</PageTitle>
+
+<style>
+    body{
+        background-color:rgb(255, 239, 213);
+    }   
+</style>
+<body>
+    <div style="display:flex;">
+        <img style="height: 900px; margin-top: 90px; margin-left: 150px;" src="/images/test.png" asp-append-version="true"/>
+        <div>
+            <p style="font-size: 110px; margin-top: 70px; margin-left: 100px; font-family: “Comic Sans MS”, “Comic Sans”">@animal</p>
+            <p style="font-size: 110px; margin-top: 40px; margin-left: 100px; font-family: “Comic Sans MS”, “Comic Sans”">@gender</p>
+            <p style="font-size: 110px; margin-top: 40px; margin-left: 100px; font-family: “Comic Sans MS”, “Comic Sans”">@privivki</p>
+            <p style="font-size: 110px; margin-top: 40px; margin-left: 100px; font-family: “Comic Sans MS”, “Comic Sans”">@poroda</p>
+            <p style="font-size: 110px; margin-top: 40px; margin-left: 100px; font-family: “Comic Sans MS”, “Comic Sans”">@age</p>
+        </div>
+        <button style="font-size: 50px; height:250px; margin-top: 740px; margin-left: 10px; background-color: lightgreen; font-family: “Comic Sans MS”, “Comic Sans”">Взять из приюта!</button>
+    </div>
+</body>
+
+
+
+@code {
+string animal = "Кот";
+string gender = "Мальчик";
+string privivki = "Прививки в наличии";
+string poroda = "Порода: крутой";
+string age = "2 года";
+}
