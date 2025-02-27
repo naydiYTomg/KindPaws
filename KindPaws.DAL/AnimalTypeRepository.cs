@@ -7,6 +7,7 @@ public class AnimalTypeRepository
 
     public List<AnimalTypeDTO> GetAllAnimalTypes()
     {
-        return App.Context.Types.ToList();
+        using var context = new Context();
+        return context.Types.ToList();
     }
 }

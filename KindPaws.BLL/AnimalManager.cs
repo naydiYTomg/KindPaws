@@ -7,8 +7,8 @@ namespace KindPaws.BLL;
 
 public class AnimalManager
 {
-    private AnimalRepository _repository = new();
-    private Mapper _mapper;
+    private readonly AnimalRepository _repository = new();
+    private readonly Mapper _mapper;
 
     public AnimalManager()
     {

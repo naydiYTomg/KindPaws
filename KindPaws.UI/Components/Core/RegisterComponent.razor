@@ -1,0 +1,57 @@
+@using System.Security.Cryptography
+@using System.Text
+@using KindPaws.Core.InputModels
+
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+
+<MudCard Class="kp-bordered-b" Style="background-color: var(--mud-palette-primary); display: flex; align-items: center; width: 30rem; height: 30rem">
+    <MudCardHeader>
+        <MudText Class="kp-all-text" Typo="Typo.h4">Регистрация</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <MudText Typo="Typo.h4" Class="kp-all-text" Style="color: darkred">@ErrorMessage</MudText>
+        }
+        <EditForm Model="_model" OnValidSubmit="HandleRegister" FormName="RegisterForm">
+            <DataAnnotationsValidator/>
+            <MudTextField Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Логин" ShrinkLabel="true" @bind-Value="_model.Login"/>
+            <ValidationMessage For="() => _model.Login"/>
+            <MudTextField Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Пароль" ShrinkLabel="true" @bind-Value="_rawPassword"/>
+            <ValidationMessage For="() => _model.Password"></ValidationMessage>
+            <MudTextField Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Имя" ShrinkLabel="true" @bind-Value="_model.Name"/>
+            <ValidationMessage For="() => _model.Name"/>
+            <MudTextField Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Фамилия" ShrinkLabel="true" @bind-Value="_model.Surname"/>
+            <ValidationMessage For="() => _model.Surname"></ValidationMessage>
+            <br/>
+            <MudButton ButtonType="ButtonType.Submit" Size="Size.Large" Style="background-color: var(--mud-palette-tertiary)">Зарегистрироваться</MudButton>
+        </EditForm>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    private string ErrorMessage = "";
+    private UserRegisteringInputModel _model = new();
+
+    private string _rawPassword;
+
+    private bool isLoading = false; 
+
+    private async Task HandleRegister()
+    {
+        isLoading = true;
+        var enc = Shake256.HashData(Encoding.UTF8.GetBytes(_rawPassword), _rawPassword.Length);
+        _model.Password = enc;
+        if (!await Program.UserManager.IsLoginFree(_model.Login))
+        {
+            ErrorMessage = $"Логин {_model.Login} уже занят!";
+            return;
+        }
+
+        await Program.UserManager.InsertUserRegisterAsync(_model);
+        Program.CurrentUser = _model;
+        Navigation.NavigateTo("/");
+    }
+}

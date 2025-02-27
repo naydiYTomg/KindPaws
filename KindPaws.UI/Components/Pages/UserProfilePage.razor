@@ -1,0 +1,23 @@
+@page "/profile"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+
+@if (Program.CurrentUser is not null)
+{
+    <MudLayout Style="background-color: var(--mud-palette-surface); width: 100%; max-height: 300rem">
+        <MainAppBar/>
+        <MudMainContent Style="height: 200rem">
+            <MudText Class="kp-all-text" Typo="Typo.h2">Ты @Program.CurrentUser.Name @Program.CurrentUser.Surname</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.ExitToApp" Size="Size.Large" Class="kp-bordered-b" OnClick="@Logout"></MudIconButton>
+        </MudMainContent>
+        <PageFooterInfo/>
+    </MudLayout>
+}
+@code {
+
+    private void Logout()
+    {
+        Navigation.NavigateTo("/");
+        Program.CurrentUser = null;
+    }
+}

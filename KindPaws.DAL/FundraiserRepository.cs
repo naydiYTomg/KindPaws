@@ -7,12 +7,14 @@ public class FundraiserRepository
 {
     public List<FundraiserDTO> GetAllFundraisers()
     {
-        return App.Context.Fundraisers.ToList();
+        using var context = new Context();
+        return context.Fundraisers.ToList();
     }
 
 
     public async Task<FundraiserDTO> GetCurrentShelterFundraiserByIdAsync(int shelterId)
     {
-        return await App.Context.Fundraisers.SingleAsync(x => !x.IsEnded && x.Shelter != null && x.Shelter.Id == shelterId);
+        await using var context = new Context();
+        return await context.Fundraisers.SingleAsync(x => !x.IsEnded && x.Shelter != null && x.Shelter.Id == shelterId);
     }
 }

@@ -7,8 +7,8 @@ namespace KindPaws.BLL;
 
 public class FundraiserManager
 {
-    private FundraiserRepository _repository = new();
-    private Mapper _mapper;
+    private readonly FundraiserRepository _repository = new();
+    private readonly Mapper _mapper;
 
     public FundraiserManager()
     {

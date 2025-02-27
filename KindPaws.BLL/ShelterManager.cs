@@ -7,8 +7,8 @@ namespace KindPaws.BLL;
 
 public class ShelterManager
 {
-    private ShelterRepository _repository = new();
-    private Mapper _mapper;
+    private readonly ShelterRepository _repository = new();
+    private readonly Mapper _mapper;
 
 
     public ShelterManager()

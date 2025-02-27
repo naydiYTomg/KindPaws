@@ -7,6 +7,7 @@ public class RoleRepository
 
     public List<RoleDTO> GetAllRoles()
     {
-        return App.Context.Roles.ToList();
+        using var context = new Context();
+        return context.Roles.ToList();
     }
 }

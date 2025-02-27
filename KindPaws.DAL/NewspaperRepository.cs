@@ -6,6 +6,7 @@ public class NewspaperRepository
 {
     public List<NewspaperDTO> GetAllNewspapers()
     {
-        return App.Context.Newspapers.ToList();
+        using var context = new Context();
+        return context.Newspapers.ToList();
     }
 }

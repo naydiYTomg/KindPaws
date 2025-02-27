@@ -11,7 +11,15 @@
         <MudIconButton Icon="@Icons.Material.Filled.AdminPanelSettings" Size="Size.Large" Color="Color.Tertiary" Href="/admin"></MudIconButton>
     }
     <MudIconButton Icon="@Icons.Material.Filled.Search" Size="Size.Large" Color="Color.Tertiary"/>
-    <MudIconButton Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Tertiary" Href="/login"/>
+    @if (Program.CurrentUser is null)
+    {
+        <MudIconButton Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Tertiary" Href="/login" />
+    }
+    else
+    {
+        <MudIconButton Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Tertiary" Href="/profile" />
+    }
+    
 </MudAppBar>
 
 

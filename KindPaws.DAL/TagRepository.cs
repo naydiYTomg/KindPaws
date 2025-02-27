@@ -7,6 +7,7 @@ public class TagRepository
 
     public List<TagDTO> GetAllTags()
     {
-        return App.Context.Tags.ToList();
+        using var context = new Context();
+        return context.Tags.ToList();
     }
 }

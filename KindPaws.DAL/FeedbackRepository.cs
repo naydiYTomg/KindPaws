@@ -7,6 +7,7 @@ public class FeedbackRepository
 
     public List<FeedbackDTO> GetAllFeedbacks()
     {
-        return App.Context.Feedbacks.ToList();
+        using var context = new Context();
+        return context.Feedbacks.ToList();
     }
 }

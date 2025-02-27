@@ -7,16 +7,19 @@ public class ShelterRepository
 {
     public List<ShelterDTO> GetAllShelters()
     {
-        return App.Context.Shelters.ToList();
+        using var context = new Context();
+        return context.Shelters.ToList();
     }
 
     public async Task<List<ShelterDTO>> GetAllSheltersAsync()
     {
-        return await App.Context.Shelters.ToListAsync();
+        await using var context = new Context();
+        return await context.Shelters.ToListAsync();
     }
 
     public async Task<ShelterDTO> GetShelterByIdAsync(int id)
     {
-        return await App.Context.Shelters.SingleAsync(x => x.Id == id);
+        await using var context = new Context();
+        return await context.Shelters.SingleAsync(x => x.Id == id);
     }
 }
