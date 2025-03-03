@@ -1,6 +1,6 @@
 ﻿@page "/AnimalProfile"
-@rendermode InteractiveServer
 
+@rendermode InteractiveServer
 <PageTitle>Животное</PageTitle>
 
 <style>
@@ -25,10 +25,11 @@
 
 
 @code {
+    using KindPaws.Core.OutputModels
+    
     string animal = "Кот";
     string gender = "Мальчик";
     string privivki = "Прививки в наличии";
     string poroda = "Порода: крутой";
     string age = "2 года";
-    
 }
