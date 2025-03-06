@@ -4,7 +4,7 @@
         <MudText Typo="Typo.h5" Class="kp-all-text">Оставить отзыв</MudText>
     </TitleContent>
     <DialogContent>
-        <EditForm Model="@_feedbackInput" OnValidSubmit="HandleFeedback">
+        <EditForm Model="_feedbackInput" OnValidSubmit="HandleFeedback">
             <DataAnnotationsValidator/>
             <MudTextField  Class="kp-all-text" Style="font-size: 20px" AutoGrow="true" Typo="Typo.h4" Label="Имя" ShrinkLabel="true" Placeholder="Иван..." @bind-Value="_feedbackInput.AuthorName" Required/>
             <ValidationMessage For="() => _feedbackInput.AuthorName"/>

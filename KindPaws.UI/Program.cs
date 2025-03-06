@@ -14,8 +14,9 @@ public class Program
     public static readonly FundraiserManager FundraiserManager = new();
     public static readonly AnimalManager AnimalManager = new();
     public static readonly UserManager UserManager = new();
+    public static bool IsAuth = false;
 
-    public static UserRegisteringInputModel? CurrentUser = null;
+    // public static UserRegisteringInputModel? CurrentUser = null;
     
     public static void Main(string[] args)
     {
@@ -24,6 +25,19 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(
+                options =>
+                {
+                    options.Cookie.Name = "auth_token";
+                    options.LoginPath = "/login";
+                    options.Cookie.MaxAge = TimeSpan.FromDays(5);
+                });
+
+        builder.Services.AddAuthorization();
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddHttpContextAccessor();
         
         builder.Services.AddMudServices();
 
@@ -43,6 +57,9 @@ public class Program
 
         app.UseStaticFiles();
         app.UseAntiforgery();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();

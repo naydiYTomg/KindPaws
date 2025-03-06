@@ -11,7 +11,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.AdminPanelSettings" Size="Size.Large" Color="Color.Tertiary" Href="/admin"></MudIconButton>
     }
     <MudIconButton Icon="@Icons.Material.Filled.Search" Size="Size.Large" Color="Color.Tertiary"/>
-    @if (Program.CurrentUser is null)
+    @if (!Program.IsAuth)
     {
         <MudIconButton Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Tertiary" Href="/login" />
     }

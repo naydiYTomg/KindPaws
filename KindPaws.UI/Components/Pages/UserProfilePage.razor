@@ -1,23 +1,41 @@
 @page "/profile"
+@using System.Security.Claims
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 
-@if (Program.CurrentUser is not null)
-{
+
     <MudLayout Style="background-color: var(--mud-palette-surface); width: 100%; max-height: 300rem">
         <MainAppBar/>
         <MudMainContent Style="height: 200rem">
-            <MudText Class="kp-all-text" Typo="Typo.h2">Ты @Program.CurrentUser.Name @Program.CurrentUser.Surname</MudText>
+            <MudText Class="kp-all-text" Typo="Typo.h2">Ты @Name @Surname</MudText>
             <MudIconButton Icon="@Icons.Material.Filled.ExitToApp" Size="Size.Large" Class="kp-bordered-b" OnClick="@Logout"></MudIconButton>
         </MudMainContent>
         <PageFooterInfo/>
     </MudLayout>
-}
+
 @code {
+    
+    [CascadingParameter]
+    public Task<AuthenticationState> State { get; set; }
+
+    private string Name { get; set; }
+    private string Surname { get; set; }
+    private string Login { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var authState = await State;
+        var user = authState.User;
+        var claims = user.Claims.ToList();
+
+        Name = claims.Single(x => x.Type == ClaimTypes.Name).Value;
+        Surname = claims.Single(x => x.Type == ClaimTypes.Surname).Value;
+        Login = claims.Single(x => x.Type == ClaimTypes.GivenName).Value;
+    }
 
     private void Logout()
     {
-        Navigation.NavigateTo("/");
-        Program.CurrentUser = null;
+        Navigation.NavigateTo("/logout");
     }
 }

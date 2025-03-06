@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using AutoMapper;
 using KindPaws.BLL.MapperProfiles;
 using KindPaws.Core.DTOs;
@@ -30,11 +32,17 @@ public class UserManager
         return got is null;
     }
 
-    public async Task<UserBasicOutputModel?> GetUserByLoginAsync(string login)
+    public async Task<bool> CheckPassword(UserBasicOutputModel model, string password)
+    {
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(password));
+        var enc = await Shake256.HashDataAsync(stream, password.Length);
+        return enc.SequenceEqual(model.Password);
+    }
+
+    public async Task<UserBasicOutputModel> GetUserByLoginAsync(string login)
     {
         var got = await _repository.GetUserByLoginAsync(login);
-        if (got is null) return null;
-        var result = _mapper.Map<UserBasicOutputModel>(got);
+        var result = _mapper.Map<UserBasicOutputModel>(got!);
         return result;
     }
 }

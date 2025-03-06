@@ -1,8 +1,10 @@
+@using System.Security.Claims
 @using System.Security.Cryptography
 @using System.Text
 @using KindPaws.Core.InputModels
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
 @using Microsoft.AspNetCore.Identity
-@rendermode InteractiveServer
 @inject NavigationManager Navigation
 
 <MudCard Class="kp-bordered-b" Style="background-color: var(--mud-palette-primary); display: flex; align-items: center; width: 30rem; height: 30rem">
@@ -14,12 +16,11 @@
         {
             <MudText Typo="Typo.h4" Class="kp-all-text" Style="color: darkred">@ErrorMessage</MudText>
         }
-        <EditForm Model="_model" OnValidSubmit="HandleLogin" FormName="LoginForm">
-            <DataAnnotationsValidator/>
-            <MudTextField Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Логин" ShrinkLabel="true" @bind-Value="_model.Login"/>
-            <ValidationMessage For="() => _model.Login"/>
-            <MudTextField Class="kp-all-text" Style="font-size: 20px;" AutoGrow="true" Typo="Typo.h4" Label="Пароль" ShrinkLabel="true" @bind-Value="_rawPassword"/>
-            <ValidationMessage For="() => _model.Password"></ValidationMessage>
+        <EditForm Model="_model" OnSubmit="HandleLogin" FormName="LoginForm">
+            @* <DataAnnotationsValidator/> *@
+            @* <InputText @bind-Value="_model.Login"/> *@
+            <InputText @bind-Value="_model.Login"/>
+            <InputText @bind-Value="_model.Password"/>
             <br/>
             <MudButton ButtonType="ButtonType.Submit" Size="Size.Large" Style="background-color: var(--mud-palette-tertiary)">Войти</MudButton>
         </EditForm>
@@ -30,33 +31,40 @@
 
     private string ErrorMessage;
     private UserLoginInputModel _model = new();
-
-    private string _rawPassword;
-    private bool isLoading = false;
+    
+    
+    [CascadingParameter]
+    public HttpContext httpContext { get; set; }
 
     private async Task HandleLogin()
     {
-        isLoading = true;
-        var enc = Shake256.HashData(Encoding.UTF8.GetBytes(_rawPassword), _rawPassword.Length);
-        _model.Password = enc;
+        Console.WriteLine("ASDSDDD");
+        _model.Login = _model.Login.ToLower().Trim();
         if (await Program.UserManager.IsLoginFree(_model.Login))
         {
-            ErrorMessage = $"Не найден пользователь с логином {_model.Login}";
+            ErrorMessage = "Неверный логин или пароль";
             return;
         }
 
         var user = await Program.UserManager.GetUserByLoginAsync(_model.Login);
-        if (!user!.Password.SequenceEqual(enc))
+        if (!await Program.UserManager.CheckPassword(user, _model.Password))
         {
-            // foreach (var (f, s) in enc.Zip(user.Password))
-            // {
-            //     Console.WriteLine($"{f} :: {s}");
-            // }
-            ErrorMessage = "Пароль не совпадает";
+            ErrorMessage = "Неверный логин или пароль";
             return;
         }
 
-        Program.CurrentUser = new UserRegisteringInputModel { Name = user.Name, Surname = user.Surname, Login = _model.Login, Password = enc };
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.GivenName, _model.Login),
+            new(ClaimTypes.Role, user.Role.Name!),
+            new(ClaimTypes.Name, user.Name),
+            new(ClaimTypes.Surname, user.Surname)
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var pr = new ClaimsPrincipal(identity);
+        
+        await httpContext.SignInAsync(pr);
         Navigation.NavigateTo("/");
         
 
